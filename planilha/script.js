@@ -36,6 +36,7 @@ function enviaLogin(){
 		body: loginForm
 	}
 	*/
+	$('#response').clean();
 
 	for (var i = semana - 1; i >= semana - 10; i--) {
 		$('#response').append(`
