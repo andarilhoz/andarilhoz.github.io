@@ -14,7 +14,7 @@ function linkPlanilha(semana,ano,login){
 
 function enviaLogin(){
 	var login = document.querySelector('#login').value;
-	var senha = document.querySelector('#senha').value;
+	//var senha = document.querySelector('#senha').value;
 	
 	var data = new Date();
 
@@ -23,7 +23,7 @@ function enviaLogin(){
 	var semana = new Date().getWeek();
 
 
-	
+	/*
 	var loginForm = {
 		txt_Matricula: login,
 		txt_Senha: senha,
@@ -35,6 +35,7 @@ function enviaLogin(){
 		mode: 'no-cors',
 		body: loginForm
 	}
+	*/
 
 	for (var i = semana - 1; i >= semana - 10; i--) {
 		$('#response').append(`
