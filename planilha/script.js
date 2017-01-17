@@ -39,10 +39,14 @@ function enviaLogin(){
 	$('#response').empty();
 
 	for (var i = semana - 1; i >= semana - 10; i--) {
+		newSemana = undefined;
+		if(i <= 0){
+			var newSemana = new Date(`${ano}`).getWeek() -1 + i;
+		}
 		$('#response').append(`
 			<ul>
 			    <li>
-			    	<a href=`+ linkPlanilha(i,ano,login) +`>Semana: `+ i+`</a>
+			    	<a href=`+ linkPlanilha(newSemana ? newSemana : i, newSemana ? ano -1: ano,login) +`>Semana: `+  (newSemana ? newSemana : i) +`</a>
 			    </li>
 			</ul>
 			`)	
