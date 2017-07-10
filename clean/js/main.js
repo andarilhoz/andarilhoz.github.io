@@ -70,7 +70,7 @@ function draw () {
 
   drawPersonagem(floor, jumpSpeed);
 
-  if(checkForCollision(50,cactusPos,70,relativePos)){
+  if(checkForCollision(50,cactusPos, actualPos,floor)){
     gameOver = true
   }
 
@@ -82,14 +82,25 @@ function cactusGenerator (floor, cactusSpeed) {
   ctx.strokeRect(cactusPos, floor, 30, 70)
 }
 
-function checkForCollision(playerPos, objectPosW, AlturaObjeto, playerAltura) {
-  if(objectPosW <= playerPos){
-    if(playerAltura <= AlturaObjeto){
-      return true
-    }
-    return false
-  }
-  return false
+function checkForCollision(playerPos, objectPosW, pos, floor) {
+  // ctx.fillStyle = 'purple'
+  // ctx.fillRect(objectPosW +2,floor,5,5);
+  // ctx.fillRect(objectPosW +32,floor,5,5);
+
+  // ctx.fillStyle = 'black'
+  // ctx.fillRect(playerPos -2,pos,5,5);
+  // ctx.fillRect(playerPos +48,pos,5,5);
+
+  // ctx.fillStyle = 'pink'
+  // ctx.fillRect(objectPosW,floor - 20,5,5)
+  
+  // ctx.fillStyle = 'green'
+  // ctx.fillRect(50,pos + 50,5,5)
+
+  if( pos + 50 > floor - 20 ) 
+  if((objectPosW +32 >= playerPos -2 &&  objectPosW+2 <= playerPos + 48) ||
+    objectPosW +2 >= playerPos+48 && objectPosW+32 <= playerPos -2)
+    return true
 }
 
 function drawPersonagem(floor, jumpSpeed){
