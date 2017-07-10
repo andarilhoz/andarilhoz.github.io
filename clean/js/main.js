@@ -16,6 +16,7 @@ let podePula = true
 let relativePos = 0
 let gameOver = false
 let HighScore = localStorage.getItem('HighScore')
+let jumpSpeed = 50;
 
 document.addEventListener('keydown', function (e) {
   if(e.code == 'Space'){
@@ -61,13 +62,13 @@ function draw () {
     cactusPos = initialCactusPos;
 
   ctx.lineWidth = 1
-  ctx.strokeStyle = 'black'
+  ctx.fillStyle = 'black'
   ctx.font = '30px Arial'
-  ctx.strokeText('Time: ' + difference, canvas.width / 2  - 200, 100)
+  ctx.fillText('Time: ' + difference, canvas.width / 2  - 200, 100)
 
-  ctx.strokeText('HighScore: ' + HighScore, canvas.width / 2, 100)
+  ctx.fillText('HighScore: ' + HighScore, canvas.width / 2, 100)
 
-  drawPersonagem(floor);
+  drawPersonagem(floor, jumpSpeed);
 
   if(checkForCollision(50,cactusPos,70,relativePos)){
     gameOver = true
@@ -91,7 +92,7 @@ function checkForCollision(playerPos, objectPosW, AlturaObjeto, playerAltura) {
   return false
 }
 
-function drawPersonagem(floor){
+function drawPersonagem(floor, jumpSpeed){
   ctx.strokeStyle = 'red'
   ctx.lineWidth = 5
   if(actualPos == 0)
@@ -100,15 +101,16 @@ function drawPersonagem(floor){
   // console.log(actualPos, relativePos)
   // console.log(maxJumpHeight)
   if(jumping && relativePos < maxJumpHeight)
-    ctx.strokeRect(50, actualPos-= 5, 50, 50)
+    ctx.strokeRect(50, actualPos-= jumpSpeed > 0? jumpSpeed-= 35: 1, 50, 50)
   else if( relativePos >= maxJumpHeight)
     jumping = false
 
   if( floor > actualPos && !jumping){
-    ctx.strokeRect(50, actualPos+=5, 50, 50)
+    ctx.strokeRect(50, actualPos+= jumpSpeed > 0  ? jumpSpeed-= 35: 1, 50, 50)
   }else if(!jumping){
     ctx.strokeRect(50, floor, 50, 50)
     actualPos = floor
+    jumpSpeed = 10
     podePula = true
   }
 }
