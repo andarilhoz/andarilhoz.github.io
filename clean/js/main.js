@@ -9,7 +9,7 @@ let fps = 20
 let initialCactusPos = 800;
 let cactusPos = 400
 let jumping = false;
-let maxJumpHeight = 200;
+let maxJumpHeight = 250;
 let actualPos = 0
 let cactusSpeed = 5;
 let podePula = true
@@ -17,6 +17,8 @@ let relativePos = 0
 let gameOver = false
 let HighScore = localStorage.getItem('HighScore')
 let jumpSpeed = 50;
+let firstCactus 
+let secondCactus
 
 document.addEventListener('keydown', function (e) {
   if(e.code == 'Space'){
@@ -54,12 +56,13 @@ function draw () {
   ctx.moveTo(30, canvas.height / 2 + 70)
   ctx.lineTo(canvas.width - 30, canvas.height / 2 + 70)
   ctx.stroke()
-
-  cactusGenerator(floor - 20,cactusPos)
-  cactusPos -= cactusSpeed
-
-  if(cactusPos < 0)
-    cactusPos = initialCactusPos;
+  
+  if(firstCactus.getPos() <= 0)
+    firstCactus.updatePos(Math.floor(Math.random() * (canvas.width - secondCactus.getPos() + 200) +  secondCactus.getPos() + 200))
+  firstCactus.update()
+  if(secondCactus.getPos() <= 0)
+    secondCactus.updatePos(Math.floor(Math.random() * (canvas.width - firstCactus.getPos() + 200) +  firstCactus.getPos() + 200))
+  secondCactus.update()
 
   ctx.lineWidth = 1
   ctx.fillStyle = 'black'
@@ -70,19 +73,37 @@ function draw () {
 
   drawPersonagem(floor, jumpSpeed);
 
-  if(checkForCollision(50,cactusPos, actualPos,floor)){
-    gameOver = true
+}
+
+function cactusGenerator () {
+  this.pos = 0;
+  this.updatePos = function(val){
+    this.pos = val;
+  }
+  this.getPos = function(){
+    return this.pos
+  }
+  this.update = function(){
+
+    let floor = canvas.height / 2 
+    ctx.strokeStyle = 'green'
+    ctx.lineWidth = 3
+    
+    //console.log(this.pos, this.initialPos == 400 ? 'primeiro' : 'segundo')
+    
+    if(this.pos <= 0)
+         this.pos =  Math.floor(Math.random() * (800-400 +1) +400)
+
+      ctx.strokeRect(this.pos-=cactusSpeed, floor, 30, 70)
+
+      if(checkForCollision(this.pos, actualPos,floor)){
+        gameOver = true
+      }
   }
 
 }
 
-function cactusGenerator (floor, cactusSpeed) {
-  ctx.strokeStyle = 'green'
-  ctx.lineWidth = 3
-  ctx.strokeRect(cactusPos, floor, 30, 70)
-}
-
-function checkForCollision(playerPos, objectPosW, pos, floor) {
+function checkForCollision(objectPosW, pos, floor) {
   // ctx.fillStyle = 'purple'
   // ctx.fillRect(objectPosW +2,floor,5,5);
   // ctx.fillRect(objectPosW +32,floor,5,5);
@@ -98,8 +119,8 @@ function checkForCollision(playerPos, objectPosW, pos, floor) {
   // ctx.fillRect(50,pos + 50,5,5)
 
   if( pos + 50 > floor - 20 ) 
-  if((objectPosW +32 >= playerPos -2 &&  objectPosW+2 <= playerPos + 48) ||
-    objectPosW +2 >= playerPos+48 && objectPosW+32 <= playerPos -2)
+  if((objectPosW +32 >= 50 -2 &&  objectPosW+2 <= 50 + 48) ||
+    objectPosW +2 >= 50+48 && objectPosW+32 <= 50 -2)
     return true
 }
 
@@ -132,12 +153,14 @@ function sleep (ms) {
 }
 
 async function loop () {
-
+    firstCactus = new cactusGenerator()
+    secondCactus = new cactusGenerator()
   while (!gameOver) {
 
     let current = new Date()
     difference = Math.floor((current - date ) / 1000)
     //console.log(difference)
+
 
     draw()
 
