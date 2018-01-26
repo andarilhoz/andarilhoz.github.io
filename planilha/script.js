@@ -41,7 +41,7 @@ function enviaLogin(){
 	for (var i = semana - 1; i >= semana - 10; i--) {
 		newSemana = undefined;
 		if(i <= 0){
-			var newSemana = new Date(`${ano}`).getWeek() -1 + i;
+			var newSemana = new Date(`${ano}`).getWeek() + i;
 		}
 		$('#response').append(`
 			<ul>
