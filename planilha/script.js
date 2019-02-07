@@ -1,10 +1,12 @@
 //var cooperAdd = 'http://cmsys.com.br/cooperpeople/validaCooperado.asp'; 
+const loginUrl = "http://cmsys.com.br/cooperpeople/validaCooperado.asp";
 
 Date.prototype.getWeek = function() {
     var onejan = new Date(this.getFullYear(),0,1);
     var millisecsInDay = 86400000;
     return Math.ceil((((this - onejan) /millisecsInDay) + onejan.getDay()+1)/7);
 };
+
 
 var qs = document.querySelectorAll;
 
@@ -14,7 +16,7 @@ function linkPlanilha(semana,ano,login){
 
 function enviaLogin(){
 	var login = document.querySelector('#login').value;
-	//var senha = document.querySelector('#senha').value;
+	var senha = document.querySelector('#senha').value;
 	
 	var data = new Date();
 
@@ -23,7 +25,7 @@ function enviaLogin(){
 	var semana = new Date().getWeek();
 
 
-	/*
+	
 	var loginForm = {
 		txt_Matricula: login,
 		txt_Senha: senha,
@@ -35,7 +37,13 @@ function enviaLogin(){
 		mode: 'no-cors',
 		body: loginForm
 	}
-	*/
+	
+	fetch(loginUrl,formOpts)
+	.then(function(response){
+		console.log(response);
+	})
+	
+	
 	$('#response').empty();
 
 	for (var i = semana - 1; i >= semana - 10; i--) {
@@ -55,11 +63,7 @@ function enviaLogin(){
 
 	//window.location = planilha;
 
-	/*
-	fetch(cooperAdd,formOpts).
-	then(function(response){
-		window.location = planilha;
-	})
-	*/
+	
+
 }
 
